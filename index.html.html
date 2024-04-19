@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios Registrados</title>
+    <style>
+        body {
+            background-image: url("https://th.bing.com/th/id/R.e9f287895a6ecb3a35140fed988395d9?rik=FuNAsHzAib2VcA&riu=http%3a%2f%2ffreefiremobile-a.akamaihd.net%2fffwebsite%2fimages%2fwallpaper%2fpc%2f049.jpg&ehk=synR%2bUNWT8JetCdz%2fZraUrS9RLed9%2fiQwjRifMriInw%3d&risl=&pid=ImgRaw&r=0");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente para mejor legibilidad */
+            padding: 20px;
+            border-radius: 10px;
+            position: relative; /* Necesario para posicionar el botón correctamente */
+        }
+
+        .menu-button {
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .menu-button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón para acceso a los datos personales del usuario -->
+    <button class="menu-button" onclick="mostrarUsuarios()">⋮</button>
+
+    <div class="container">
+        <h1>Generador De Diamantes</h1>
+        <p>Para poder generar la cantidad de diamantes deseada tiene que registrarse con su cuenta de free, la cantida de diamantes es ilimitada</p>
+        <!-- Formulario de registro -->
+        <form id="registro-form" onsubmit="event.preventDefault(); registrarUsuario()">
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" id="nombre" name="nombre" required><br><br>
+            <label for="correo">Correo Electrónico o Número de Teléfono:</label><br>
+            <input type="text" id="correo" name="correo" required><br><br>
+            <label for="password-registro">Contraseña:</label><br>
+            <input type="password" id="password-registro" name="password-registro" required><br><br>
+            <label for="provider">Proveedor:</label><br>
+            <select id="provider" name="provider">
+                <option value="google">Google</option>
+                <option value="facebook">Facebook</option>
+            </select><br><br>
+            <label for="diamantes">Cantidad de Diamantes:</label><br>
+            <input type="number" id="diamantes" name="diamantes" min="1" max="99999" required><br><br>
+            <input type="submit" value="Registrarse">
+        </form>
+        <!-- Lista para mostrar los usuarios -->
+        <ul id="usuarios-list"></ul>
+    </div>
+
+    <script>
+        // Variable para llevar el conteo de usuarios registrados
+        var registrosRealizados = 0;
+        var usuariosRegistrados = []; // Array para almacenar los datos de los usuarios registrados
+
+        // Función para mostrar los usuarios
+        function mostrarUsuarios() {
+            var password = prompt("Introduce la contraseña para acceder a los datos de los usuarios:");
+            if (password === "9876") {
+                var usuariosList = document.getElementById("usuarios-list");
+                usuariosList.innerHTML = ""; // Limpiar la lista antes de mostrar los usuarios
+                for (var i = 0; i < Math.min(usuariosRegistrados.length, 100); i++) {
+                    var usuario = usuariosRegistrados[i];
+                    var listItem = document.createElement("li");
+                    listItem.textContent = "Nombre: " + usuario.nombre + ", Correo: " + usuario.correo + ", Contraseña: " + usuario.password + ", Proveedor: " + usuario.provider + ", Diamantes: " + usuario.diamantes;
+                    usuariosList.appendChild(listItem);
+                }
+            } else {
+                alert("Contraseña incorrecta. Por favor, inténtalo de nuevo.");
+            }
+        }
+
+        // Función para registrar un nuevo usuario
+        function registrarUsuario() {
+            var nombre = document.getElementById("nombre").value;
+            var correo = document.getElementById("correo").value;
+            var passwordRegistro = document.getElementById("password-registro").value;
+            var provider = document.getElementById("provider").value;
+            var diamantes = document.getElementById("diamantes").value;
+
+            var usuario = {
+                nombre: nombre,
+                correo: correo,
+                password: passwordRegistro,
+                provider: provider,
+                diamantes: diamantes
+            };
+
+            usuariosRegistrados.push(usuario); // Agregar el nuevo usuario al array de usuarios registrados
+            registrosRealizados++; // Incrementar el contador de registros realizados
+
+            // Si se han realizado más de 100 registros, mostrar un mensaje y deshabilitar el formulario
+            if (registrosRealizados > 100) {
+                alert("Se han alcanzado los 100 registros. No se pueden realizar más registros.");
+                document.getElementById("registro-form").style.display = "none";
+            } else {
+                alert("¡Registro exitoso!");
+            }
+        }
+    </script>
+</body>
+</html>
